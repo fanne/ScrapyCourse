@@ -66,9 +66,10 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'AritcleSpider.pipelines.AritclespiderPipeline': 300,
-    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    # 'AritcleSpider.pipelines.JsonWithEncodingPipeline': 2,
+    'AritcleSpider.pipelines.JsonExporterPipeline': 3,
     'AritcleSpider.pipelines.ArticleImagePipeline': 1,
+    # 'scrapy.pipelines.images.ImagesPipeline': 1,
 }
 
 # 后面数字作用，优先级，数据流先流向数字低的pipelines

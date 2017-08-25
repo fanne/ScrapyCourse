@@ -6,8 +6,10 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 import codecs
-# codecs为django的开发包，可避免编码方面的问题
+# codecs为python的开发包，可避免编码方面的问题
+import json
 from scrapy.pipelines.images import ImagesPipeline
+from scrapy.exporters import JsonItemExporter
 
 
 class AritclespiderPipeline(object):
@@ -16,11 +18,32 @@ class AritclespiderPipeline(object):
 
 
 class JsonWithEncodingPipeline(object):
+    # 自定义json文件的导出
     def __init__(self):
-        self.file = codecs.open('article_json', 'w', encoding='utf8')
+        self.file = codecs.open('article.json', 'w', encoding='utf-8')
     def process_item(self, item, spider):
+        lines = json.dumps(dict(item), ensure_ascii=False) + "\n"
+        # ensure_ascii=False:为了防止输入中文时候出现错误，非常重要
+        self.file.write(lines)
         return item
-    pass
+    def spider_closed(self, spider):
+        self.file.close()
+
+class JsonExporterPipeline(object):
+    # 调用scrapy提供的json export导出json文件
+    def __init__(self):
+        self.file = open("articleexport.json", "wb")
+        self.exporter = JsonItemExporter(self.file, encoding="utf-8", ensure_ascii=False)
+        self.exporter.start_exporting()
+
+    def close_spider(self, spider):
+        self.exporter.finish_exporting()
+        self.file.close()
+
+    def process_item(self, item, spider):
+        self.exporter.export_item(item)
+        return item
+
 
 class ArticleImagePipeline(ImagesPipeline):
     def item_completed(self, results, item, info):
