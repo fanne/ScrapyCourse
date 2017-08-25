@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 # Scrapy settings for AritcleSpider project
 #
 # For simplicity, this file contains only settings considered important or
@@ -64,9 +65,19 @@ ROBOTSTXT_OBEY = False
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'AritcleSpider.pipelines.AritclespiderPipeline': 300,
-#}
+ITEM_PIPELINES = {
+   'AritcleSpider.pipelines.AritclespiderPipeline': 300,
+    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    'AritcleSpider.pipelines.ArticleImagePipeline': 1,
+}
+
+# 后面数字作用，优先级，数据流先流向数字低的pipelines
+IMAGES_URLS_FIELD = "front_image_url"
+project_dir = os.path.abspath(os.path.dirname(__file__))
+IMAGES_STORE = os.path.join(project_dir, "images")
+
+# IMAGE_MIN_HEIGHT = 100
+# IMAGE_MIN_WIDTH = 100
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
