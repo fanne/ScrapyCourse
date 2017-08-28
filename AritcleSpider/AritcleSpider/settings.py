@@ -104,7 +104,11 @@ IMAGES_STORE = os.path.join(project_dir, "images")
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 # mysql setting
-MYSQL_HOST = '10.163.46.92'
+if os.getenv('scrapy_mysql') == 'homeDB':
+    MYSQL_HOST = '127.0.0.1'
+elif os.getenv('scrapy_mysql') == 'officeDB':
+    MYSQL_HOST = '10.163.46.92'
+
 MYSQL_DBNAME = 'article_spider'
 MYSQL_USER = 'root'
 MYSQL_PASSWD = 'qwe123'
