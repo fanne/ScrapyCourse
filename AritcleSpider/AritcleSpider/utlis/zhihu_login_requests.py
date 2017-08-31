@@ -137,6 +137,6 @@ def zhihu_login(account, pawword):
 
 
 if __name__ == '__main__':
-    zhihu_login("18700000000", "password")
-    # get_index()
+    # zhihu_login("18700000000", "password")
+    get_index()
     # is_login()
